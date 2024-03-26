@@ -1,13 +1,25 @@
 from django.contrib.auth import views as auth_views, login, logout
+from django.contrib.auth.mixins import AccessMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 
 from django.views import generic as views
 
+from tasker.accounts.forms import TaskerUserCreationForm
+
+
+class OwnerRequiredMixin(AccessMixin):
+    """Verify that the current user has this profile."""
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.pk != kwargs.get('pk', None):
+            return self.handle_no_permission()
+        return super().dispatch(request, *args, **kwargs)
+
 
 class RegisterView(views.CreateView):
     template_name = 'accounts/register.html'
-    # form_class = RegisterForm
+    form_class = TaskerUserCreationForm
     success_url = reverse_lazy('index')
 
     def form_valid(self, form):
