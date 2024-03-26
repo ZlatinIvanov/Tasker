@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% load static %}
+
+    <div class="edit-delete edit-photo">
+        <h2>New Task</h2>
+        <form action="{% url 'create_task' %}" method="post" enctype="multipart/form-data">
+            {{ form.as_p }}
+            <button class="add-btn" type="submit">Create</button>
+
+            {% csrf_token %}
+        </form>
+    </div>
