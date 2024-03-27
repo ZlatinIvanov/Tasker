@@ -1,4 +1,7 @@
+{% extends "base.html" %}
+
 {% load static %}
+{% block main_content %}
 
     <div class="edit-delete edit-photo">
         <h2>New Task</h2>
@@ -9,3 +12,4 @@
             {% csrf_token %}
         </form>
     </div>
+{% endblock %}

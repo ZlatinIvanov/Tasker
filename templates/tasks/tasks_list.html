@@ -1,4 +1,9 @@
+{% extends "base.html" %}
+
 {% load static %}
+{#{% load paging %}#}
+{% block main_content %}
+
 
 <h1>Task List</h1>
 <ul>
@@ -6,3 +11,4 @@
         <li>{{ task.title }}</li>
     {% endfor %}
 </ul>
+{% endblock %}

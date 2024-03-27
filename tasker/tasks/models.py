@@ -54,10 +54,10 @@ class Tasks(models.Model):
         help_text="Enter the task creation date",
         verbose_name="Task creation date",
     )
-
-    updated_at = models.DateTimeField(
-        auto_now=True,
-    )
+    #
+    # updated_at = models.DateTimeField(
+    #     auto_now=True,
+    # )
 
     difficulty = models.CharField(
         max_length=20,
