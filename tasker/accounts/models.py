@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.contrib.auth import models as auth_models
+from django.forms import DateInput
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 
@@ -66,6 +67,7 @@ class Profile(models.Model):
         TaskerUser,
         on_delete=models.CASCADE,
         primary_key=True,
+        related_name="profile",
     )
 
     @property

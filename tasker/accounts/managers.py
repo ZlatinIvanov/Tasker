@@ -7,9 +7,7 @@ class TaskerUserManager(auth_models.UserManager):
     use_in_migrations = True
 
     def _create_user(self, email, password, **extra_fields):
-        """
-        Create and save a user with the given username, email, and password.
-        """
+
         if not email:
             raise ValueError("The given email must be set")
         email = self.normalize_email(email)
@@ -43,12 +41,10 @@ class TaskerUserManager(auth_models.UserManager):
                 backend, _ = backends[0]
             else:
                 raise ValueError(
-                    "You have multiple authentication backends configured and "
-                    "therefore must provide the `backend` argument."
+
                 )
         elif not isinstance(backend, str):
             raise TypeError(
-                "backend must be a dotted import path string (got %r)." % backend
             )
         else:
             backend = auth.load_backend(backend)

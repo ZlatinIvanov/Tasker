@@ -3,53 +3,31 @@
 {% load static %}
 
 {% block main_content %}
-
-        <div class="profile">
+    <div class="profile">
         <div class="profile-data">
             <div class="profile_img">
-{#                <div class="image">#}
-{#                    {% if object.profile_picture %}#}
-{#                        <img src="{{ object.profile_picture }}" alt="img8"/>#}
-{#                    {% else %}#}
-{#                        <img src="{% static 'images/person.png' %}" alt="img8"/>#}
-{#                    {% endif %}#}
-{#                </div>#}
+                <!-- Add profile picture display logic here if needed -->
             </div>
             <div class="personal">
                 <div class="edit">
                     <p>{{ profile.user.email }}</p>
-
-                    {% if object.pk == request.user.pk %}
-                        <a href="{% url 'edit profile' pk=object.pk %}">
-                            <img
-                                    class="edit-img"
-                                    src="{% static 'images/edit-pen-icon-6.jpg' %}"
-                                    alt="edit button"
-                            />
+                    {% if profile.user.pk == request.user.pk %}
+                        <a href="{% url 'edit profile' pk=profile.pk %}">
+                            <img class="edit-img" src="{% static 'images/edit.png' %}" alt="edit button" />
                         </a>
-
-                        <a href="{% url 'delete profile' pk=object.pk %}">
-                            <img
-                                    class="bin-img"
-                                    src="{% static 'images/icon-remove-22.jpg' %}"
-                                    alt="bin button"
-                            />
+                        <a href="{% url 'delete profile' pk=profile.pk %}">
+                            <img class="bin-img" src="{% static 'images/bin.jpg' %}" alt="bin button" />
                         </a>
                     {% endif %}
                 </div>
-
-                {% if object.full_name %}
-                    <h3 class="names">{{ object.full_name }}</h3>
+                {% if profile.full_name %}
+                    <h3 class="names">{{ profile.full_name }}</h3>
                 {% endif %}
-
-                {% if object.date_of_birth %}
-                    {{ object.date_of_birth }}
+                {% if profile.date_of_birth %}
+                    <p>Date of Birth: {{ profile.date_of_birth }}</p>
                 {% endif %}
-
-                <p> class="email">{{ object.user.email }}</p>
+                <p class="email">Email: {{ profile.user.email }}</p>
             </div>
         </div>
-
     </div>
-
 {% endblock %}
