@@ -1,0 +1,9 @@
+ /* CSS to center the title */
+        .main-heading {
+            text-align: center;
+        }
+
+        /* CSS to align buttons left to right */
+        .navbar-nav {
+            margin-left: auto;
+        }

@@ -8,6 +8,14 @@
     <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/solar/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
     <title> Tasker </title>
+    <style>
+
+        #box {
+            max-width: 100%; /* Adjust the maximum width as needed */
+            margin: 0 auto;
+            padding: 20px;
+        }
+    </style>
 </head>
 
 
@@ -15,9 +23,9 @@
 <div id="box">
     <header>
 
-<br>
+        <br>
 
-</header>
+    </header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-center">
         <a class="navbar-brand main-heading">
             &nbsp; Tasker
@@ -37,12 +45,25 @@
             <ul class="navbar-nav ms-auto">
                 {% if request.user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="btn btn-primary navbar-btn" type="button" href="{% url 'details profile' pk=request.user.pk %}">Profile</a>
+                        <a class="btn btn-primary navbar-btn" type="button" href="{% url 'create_task' %}">Create
+                            Task</a>
+                    </li>
+                    &nbsp; &nbsp; &nbsp;
+                    <li class="nav-item">
+                        <a class="btn btn-primary navbar-btn" type="button" href="{% url 'tasks_list' %}">Tasks List</a>
+                    </li>
+                    &nbsp; &nbsp; &nbsp;
+                    <li class="nav-item">
+                        <a class="btn btn-primary navbar-btn" type="button"
+                           href="{% url 'details profile' pk=request.user.pk %}">Profile</a>
                     </li>
                     &nbsp; &nbsp; &nbsp;
                     <li class="nav-item">
                         <a class="btn btn-primary navbar-btn" type="button" href="{% url 'logout' %}">Logout</a>
                     </li>
+                    &nbsp; &nbsp; &nbsp;
+
+
                 {% else %}
                     <li class="nav-item">
                         <a class="btn btn-primary navbar-btn" type="button" href="{% url 'register' %}">Register</a>

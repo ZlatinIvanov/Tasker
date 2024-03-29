@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% block main_content %}
+    <style>
+        h1 {
+            margin: 0 auto; /* This centers the form horizontally */
+            width: 100%; /* Adjust the width as needed */
+            text-align: center; /* This centers the form vertically */
+        }
+    </style>
+    <h1>Task Detail</h1>
+    <p>Title: {{ object.title }}</p>
+    <p>Description: {{ object.description }}</p>
+    <!-- Add more details as needed -->
+{% endblock %}

@@ -49,16 +49,9 @@ class ProfileDetailsView(views.DetailView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        print("All Profiles in Database:", queryset)  # Debugging statement
         pk = self.kwargs.get(self.pk_url_kwarg)
-        print("Primary Key from URL:", pk)  # Debugging statement
         filtered_queryset = queryset.filter(pk=pk)
-        print("Filtered Queryset:", filtered_queryset)  # Debugging statement
         return filtered_queryset
-
-
-class DatePickerInput:
-    pass
 
 
 class ProfileUpdateView(views.UpdateView):

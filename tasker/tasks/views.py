@@ -21,4 +21,14 @@ class TaskCreateView(auth_mixin.LoginRequiredMixin, views.CreateView):
     def get_success_url(self):
         return reverse('tasks_list')
 
+class TaskDetailsView(auth_mixin.LoginRequiredMixin, views.DetailView):
+    queryset = Tasks.objects.all()
+    template_name = "tasks/task_details.html"
+    pk_url_kwarg = 'pk'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        pk = self.kwargs.get(self.pk_url_kwarg)
+        filtered_queryset = queryset.filter(pk=pk)
+        return filtered_queryset
 

@@ -5,10 +5,18 @@
 {% block main_content %}
 
 
+<style>
+    h1 {
+        margin: 0 auto; /* This centers the form horizontally */
+        width: 100%; /* Adjust the width as needed */
+        text-align: center; /* This centers the form vertically */
+    }
+</style>
+
 <h1>Task List</h1>
 <ul>
     {% for task in tasks %}
-        <li>{{ task.title }}</li>
+        <li><a href="{% url 'task_details' pk=task.pk %}">{{ task.title }}</a></li>
     {% endfor %}
 </ul>
 {% endblock %}
