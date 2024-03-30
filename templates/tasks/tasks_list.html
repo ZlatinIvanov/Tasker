@@ -4,19 +4,56 @@
 {#{% load paging %}#}
 {% block main_content %}
 
-
 <style>
     h1 {
         margin: 0 auto; /* This centers the form horizontally */
         width: 100%; /* Adjust the width as needed */
         text-align: center; /* This centers the form vertically */
     }
+
+    .task-item {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .task-priority {
+        text-align: right;
+    }
+
+    .priority-low {
+        color: white;
+    }
+
+    .priority-normal {
+        color: blue;
+    }
+
+    .priority-high {
+        color: red;
+    }
 </style>
 
 <h1>Task List</h1>
-<ul>
+
+<form method="GET" style="text-align: right;">
+    <label for="sort">Sort by:</label>
+    <select name="sort" id="sort">
+        <option value="priority" {% if request.GET.sort == "priority" %}selected{% endif %}>Priority</option>
+        <option value="created_at" {% if request.GET.sort == "created_at" %}selected{% endif %}>Created At</option>
+        <option value="due_date" {% if request.GET.sort == "due_date" %}selected{% endif %}>Due Date</option>
+        <option value="title" {% if request.GET.sort == "title" %}selected{% endif %}>Title</option>
+    </select>
+    <button type="submit">Sort</button>
+</form>
+
+<div class="list-group">
     {% for task in tasks %}
-        <li><a href="{% url 'task_details' pk=task.pk %}">{{ task.title }}</a></li>
+        <a href="{% url 'task_details' pk=task.pk %}" class="list-group-item list-group-item-action task-item">
+            <span>{{ task.title }}</span>
+            <span class="task-priority {% if task.priority == 'LOW' %} priority-low {% elif task.priority == 'NORMAL' %} priority-normal {% elif task.priority == 'HIGH' %} priority-high {% endif %}">{{ task.priority }}</span>
+        </a>
     {% endfor %}
-</ul>
+</div>
+
+
 {% endblock %}

@@ -21,6 +21,7 @@ class TaskCreateView(auth_mixin.LoginRequiredMixin, views.CreateView):
     def get_success_url(self):
         return reverse('tasks_list')
 
+
 class TaskDetailsView(auth_mixin.LoginRequiredMixin, views.DetailView):
     queryset = Tasks.objects.all()
     template_name = "tasks/task_details.html"
@@ -32,3 +33,21 @@ class TaskDetailsView(auth_mixin.LoginRequiredMixin, views.DetailView):
         filtered_queryset = queryset.filter(pk=pk)
         return filtered_queryset
 
+
+class TaskListView(views.ListView):
+    model = Tasks
+    template_name = 'tasks/tasks_list.html'
+    context_object_name = 'tasks'
+
+    def get_queryset(self):
+        sort_by = self.request.GET.get('sort')
+        if sort_by == 'priority':
+            return Tasks.objects.order_by('priority')
+        elif sort_by == 'created_at':
+            return Tasks.objects.order_by('created_at')
+        elif sort_by == 'due_date':
+            return Tasks.objects.order_by('due_date')
+        elif sort_by == 'title':
+            return Tasks.objects.order_by('title')
+        else:
+            return Tasks.objects.all()
