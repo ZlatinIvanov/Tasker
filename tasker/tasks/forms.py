@@ -10,3 +10,12 @@ class TaskCreateForm(forms.ModelForm):
         widgets = {
             'due_date': forms.DateInput(attrs={'type': 'date'}),
         }
+
+
+class TaskUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Tasks
+        fields = ['title', 'description', 'priority', 'difficulty', 'due_date', 'assigned_to', 'created_by']
+        widgets = {
+            'due_date': forms.DateInput(attrs={'type': 'date'}),
+        }

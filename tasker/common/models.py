@@ -1,3 +1,31 @@
 from django.db import models
+from django.contrib.auth.models import Group
+from django.contrib.auth.models import Permission
+from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
-# Create your models here.
+from tasker.tasks.models import Tasks, TaskState
+
+directors_group, _ = Group.objects.get_or_create(name='Directors')
+managers_group, _ = Group.objects.get_or_create(name='Managers')
+workers_group, _ = Group.objects.get_or_create(name='Workers')
+
+
+directors_group.permissions.add(Permission.objects.get(codename='add_profile'))
+directors_group.permissions.add(Permission.objects.get(codename='change_profile'))
+directors_group.permissions.add(Permission.objects.get(codename='delete_profile'))
+directors_group.permissions.add(Permission.objects.get(codename='view_profile'))
+directors_group.permissions.add(Permission.objects.get(codename='add_task'))
+directors_group.permissions.add(Permission.objects.get(codename='change_task'))
+directors_group.permissions.add(Permission.objects.get(codename='delete_task'))
+directors_group.permissions.add(Permission.objects.get(codename='view_task'))
+
+managers_group.permissions.add(Permission.objects.get(codename='add_task'))
+managers_group.permissions.add(Permission.objects.get(codename='change_task'))
+managers_group.permissions.add(Permission.objects.get(codename='delete_task'))
+managers_group.permissions.add(Permission.objects.get(codename='view_task'))
+managers_group.permissions.add(Permission.objects.get(codename='view_profile'))
+
+workers_group.permissions.add(Permission.objects.get(codename='view_profile'))
+workers_group.permissions.add(Permission.objects.get(codename='view_task'))
+

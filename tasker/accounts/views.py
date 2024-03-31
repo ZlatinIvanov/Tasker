@@ -7,11 +7,10 @@ from django.urls import reverse_lazy, reverse
 from django.views import generic as views
 
 from tasker.accounts.forms import TaskerUserCreationForm
-from tasker.accounts.models import Profile
+from tasker.accounts.models import Profile, TaskerUser
 
 
 class OwnerRequiredMixin(AccessMixin):
-    """Verify that the current user has this profile."""
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.pk != kwargs.get('pk', None):
@@ -45,13 +44,17 @@ def logout_user(request):
 class ProfileDetailsView(views.DetailView):
     queryset = Profile.objects.all()
     template_name = "accounts/details_profile.html"
-    pk_url_kwarg = 'pk'  # Specify the URL parameter for the primary key
+    pk_url_kwarg = 'pk'
 
     def get_queryset(self):
         queryset = super().get_queryset()
         pk = self.kwargs.get(self.pk_url_kwarg)
         filtered_queryset = queryset.filter(pk=pk)
         return filtered_queryset
+
+    # def get_object(self, queryset=None):
+    #     # Fetch the user's profile
+    #     return get_object_or_404(Profile, user=self.request.user)
 
 
 class ProfileUpdateView(views.UpdateView):
@@ -72,5 +75,6 @@ class ProfileUpdateView(views.UpdateView):
 
 
 class ProfileDeleteView(views.DeleteView):
-    queryset = Profile.objects.all()
+    queryset = TaskerUser.objects.all()
     template_name = "accounts/delete_profile.html"
+    success_url = reverse_lazy('index')

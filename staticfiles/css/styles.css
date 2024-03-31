@@ -1,9 +1,90 @@
- /* CSS to center the title */
-        .main-heading {
-            text-align: center;
-        }
+.main-heading {
+    text-align: center;
+}
 
-        /* CSS to align buttons left to right */
-        .navbar-nav {
-            margin-left: auto;
-        }
+.navbar-nav {
+    margin-left: auto;
+}
+
+.list-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left; /* Align text to the left */
+}
+
+
+.list-group2 {
+    display: flex; /* Change display to flex */
+    flex-direction: column; /* Stack items vertically */
+    align-items: flex-start; /* Align items to the start of the container */
+    text-align: left; /* Align text to the left */
+}
+
+
+.task-part span {
+    text-align: left; /* Align text to the left */
+}
+
+.task-priority {
+    margin-left: 10px; /* Add space between priority and other parts */
+    text-align: right; /* Align priority to the right */
+    display: inline-block; /* Ensure priority text wraps correctly */
+}
+
+.task-priority-wrapper {
+    text-align: right;
+}
+
+.task-item {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left; /* Align text to the left */
+    grid-template-columns: repeat(5, 1fr); /* Split into five equal parts */
+    display: grid;
+    text-align-last: left;
+}
+
+.task-item {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left; /* Align text to the left */
+    grid-template-columns: repeat(5, 1fr); /* Split into five equal parts */
+    display: grid;
+    text-align-last: left;
+}
+
+.task-part {
+    flex: 1; /* Each part takes up equal space */
+    text-align: left; /* Align text to the left */
+}
+
+.priority-low {
+    color: white;
+}
+
+.priority-normal {
+    color: blue;
+}
+
+.priority-high {
+    color: red;
+}
+
+form button {
+    display: block; /* Change button display to block */
+    width: 100%; /* Make button take the full width of its container */
+    margin-bottom: 10px; /* Add space between buttons */
+    text-align: center; /* Align button text to the center */
+}
+
+
+.edit-img,
+.bin-img {
+    width: 50px; /* Adjust the width as needed */
+    height: 50px; /* Adjust the height as needed */
+    border-radius: 30%; /* Make the corners round */
+    margin-right: 25px; /* Add space to the right of the buttons */
+}

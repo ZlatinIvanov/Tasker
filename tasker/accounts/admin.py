@@ -2,7 +2,6 @@ from django.contrib import admin
 from django.contrib.auth import admin as auth_admin, get_user_model
 
 from tasker.accounts.forms import TaskerUserCreationForm, TaskerEditUserForm
-from tasker.accounts.models import Profile
 
 UserModel = get_user_model()
 

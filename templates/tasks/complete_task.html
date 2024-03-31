@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block main_content %}
+    <h1>{{ object.title }}</h1>
+    <p>Description: {{ object.description }}</p>
+    <p>Due Date: {{ object.due_date }}</p>
+
+    <br>
+    <p>Are you sure you want to complete the task "{{ task.title }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Yes, Complete Task</button>
+    </form>
+
+{% endblock %}

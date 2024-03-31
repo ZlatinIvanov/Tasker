@@ -30,12 +30,12 @@
 
 <div class="list-group">
     {% for task in tasks %}
-
         <a href="{% url 'task_details' pk=task.pk %}" class="list-group list-group-item list-group-item-action task-item">
             <div class="task-part">{{ task.title }}</div>
             <div class="task-part">Due: {{ task.due_date }}</div>
             <div class="task-part">Difficulty: {{ task.difficulty }}</div>
             <div class="task-part">Created by: {{ task.created_by }}</div>
+
             <span class="task-priority
                 {% if task.priority == 'LOW' %} priority-low
                 {% elif task.priority == 'NORMAL' %} priority-normal
@@ -43,9 +43,7 @@
                 {% endif %}">{{ task.priority }}
             </span>
         </a>
-
     {% endfor %}
-
 </div>
 
 

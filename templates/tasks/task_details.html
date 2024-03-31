@@ -4,13 +4,28 @@
 {% block main_content %}
     <style>
         h1 {
-            margin: 0 auto; /* This centers the form horizontally */
-            width: 100%; /* Adjust the width as needed */
-            text-align: center; /* This centers the form vertically */
+            margin: 0 auto;
+            width: 100%;
+            text-align: center;
         }
     </style>
     <h1>Task Detail</h1>
     <p>Title: {{ object.title }}</p>
     <p>Description: {{ object.description }}</p>
-    <!-- Add more details as needed -->
+    <p>Created by: {{ object.created_by }}</p>
+    <p>Priority: {{ object.priority }}</p>
+    <p>Difficulty: {{ object.difficulty }}</p>
+    <p>Due Date: {{ object.due_date }}</p>
+    <p>Created at: {{ object.created_at }}</p>
+    <p>Assigned to: {{ object.assigned_to }}</p>
+    <p>State: {{ object.state }}</p>
+    {% if object.state == "Completed" %}
+        <p>Completed: {{ object.completed_at }}</p>
+    {% endif %}
+    <a href="{% url 'edit_task' pk=object.pk %}">Edit</a>
+    <a href="{% url 'delete_task' pk=object.pk %}">Delete</a>
+    {% if  object.state == "Not Done" %}
+        <a href="{% url 'complete_task' pk=object.pk %}">Complete</a>
+    {% endif %}
+
 {% endblock %}
