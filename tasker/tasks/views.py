@@ -78,24 +78,23 @@ class UserTasksListView(auth_mixin.LoginRequiredMixin, views.ListView):
 
 
 class TaskEditView(views.UpdateView):
-    model = Tasks
+    queryset = Tasks.objects.all()
     template_name = "tasks/edit_task.html"
     fields = ("title", "description", "due_date", "priority", "difficulty", "assigned_to",)
 
     def get_success_url(self):
-        return reverse_lazy("task_details", kwargs={"pk": self.object.pk})
+        return reverse_lazy("task_details", kwargs={
+            "pk": self.object.pk,
+        })
 
 
 class TaskCompleteView(views.UpdateView):
-    model = Tasks
-    template_name = 'tasks/complete_task.html'
-    fields = ('completed_at', 'state')
-
     def get(self, request, pk):
         task = get_object_or_404(Tasks, pk=pk)
         return render(request, 'tasks/complete_task.html', {'task': task})
 
     def post(self, request, pk):
+        # Process the completion of the task here
         task = get_object_or_404(Tasks, pk=pk)
         task.completed_at = timezone.now()
         task.state = 'Completed'
@@ -104,6 +103,6 @@ class TaskCompleteView(views.UpdateView):
 
 
 class TaskDeleteView(views.DeleteView):
-    model = Tasks
+    queryset = Tasks.objects.all()
     template_name = 'tasks/delete_task.html'
     success_url = reverse_lazy('tasks_list')
