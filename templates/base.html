@@ -45,6 +45,10 @@
             <ul class="navbar-nav ms-auto">
                 {% if request.user.is_authenticated %}
                     <li class="nav-item">
+                        <a class="btn btn-primary navbar-btn" type="button" href="{% url 'project_list' %}">Projects</a>
+                    </li>
+                    &nbsp; &nbsp; &nbsp;
+                    <li class="nav-item">
                         <a class="btn btn-primary navbar-btn" type="button" href="{% url 'user_tasks' %}">My Tasks</a>
                     </li>
                     &nbsp; &nbsp; &nbsp;

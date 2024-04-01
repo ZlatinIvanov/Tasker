@@ -1,23 +1,26 @@
 from django.contrib.auth import mixins as auth_mixin
-from django.forms import modelform_factory
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse, reverse_lazy
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse_lazy, reverse
 from django.utils import timezone
 from django.views import generic as views
 
 from tasker.tasks.models import Tasks
-
 from tasker.tasks.forms import TaskCreateForm
 
+SORT_OPTIONS = {
+    'priority': 'priority',
+    'created_at': 'created_at',
+    'due_date': 'due_date',
+    'title': 'title',
+}
 
-class ReadonlyViewMixin:
+
+class ReadOnlyViewMixin:
     def get_form(self, form_class=None):
         form = super().get_form(form_class=form_class)
-
         for field in form.fields.values():
             field.widget.attrs["readonly"] = "readonly"
-
         return form
 
 
@@ -29,68 +32,45 @@ class TaskCompletedListView(auth_mixin.LoginRequiredMixin, views.ListView):
     def get_queryset(self):
         sort_by = self.request.GET.get('sort')
         queryset = Tasks.objects.filter(state='Completed')
-
-        if sort_by == 'priority':
-            queryset = queryset.order_by('priority')
-        elif sort_by == 'created_at':
-            queryset = queryset.order_by('created_at')
-        elif sort_by == 'due_date':
-            queryset = queryset.order_by('due_date')
-        elif sort_by == 'title':
-            queryset = queryset.order_by('title')
-
+        if sort_by in SORT_OPTIONS:
+            return queryset.order_by(SORT_OPTIONS[sort_by])
         return queryset
 
 
 class TaskCreateView(auth_mixin.LoginRequiredMixin, views.CreateView):
     form_class = TaskCreateForm
     template_name = 'tasks/task_create.html'
-    queryset = Tasks.objects.all()
 
     def form_valid(self, form):
         form.instance.created_by = self.request.user
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('tasks_list')
+        return reverse_lazy('tasks_list')
 
 
 class TaskDetailsView(auth_mixin.LoginRequiredMixin, views.DetailView):
-    queryset = Tasks.objects.all()
+    model = Tasks
     template_name = "tasks/task_details.html"
     pk_url_kwarg = 'pk'
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        pk = self.kwargs.get(self.pk_url_kwarg)
-        filtered_queryset = queryset.filter(pk=pk)
-        return filtered_queryset
 
 
 class TaskListView(views.ListView):
     model = Tasks
-
     template_name = 'tasks/tasks_list.html'
     context_object_name = 'tasks'
 
     def get_queryset(self):
         queryset = Tasks.objects.filter(state='Not Done')
         sort_by = self.request.GET.get('sort')
-        if sort_by == 'priority':
-            return Tasks.objects.order_by('priority')
-        elif sort_by == 'created_at':
-            return Tasks.objects.order_by('created_at')
-        elif sort_by == 'due_date':
-            return Tasks.objects.order_by('due_date')
-        elif sort_by == 'title':
-            return Tasks.objects.order_by('title')
-        else:
-            return queryset
+        if sort_by in SORT_OPTIONS:
+            return queryset.order_by(SORT_OPTIONS[sort_by])
+        return queryset
 
 
 class UserTasksListView(auth_mixin.LoginRequiredMixin, views.ListView):
     model = Tasks
-    template_name = 'user_tasks.html'
+    template_name = 'tasks/user_tasks.html'
     context_object_name = 'tasks'
 
     def get_queryset(self):
@@ -98,23 +78,24 @@ class UserTasksListView(auth_mixin.LoginRequiredMixin, views.ListView):
 
 
 class TaskEditView(views.UpdateView):
-    queryset = Tasks.objects.all()
+    model = Tasks
     template_name = "tasks/edit_task.html"
     fields = ("title", "description", "due_date", "priority", "difficulty", "assigned_to",)
 
     def get_success_url(self):
-        return reverse_lazy("task_details", kwargs={
-            "pk": self.object.pk,
-        })
+        return reverse_lazy("task_details", kwargs={"pk": self.object.pk})
 
 
 class TaskCompleteView(views.UpdateView):
+    model = Tasks
+    template_name = 'tasks/complete_task.html'
+    fields = ('completed_at', 'state')
+
     def get(self, request, pk):
         task = get_object_or_404(Tasks, pk=pk)
         return render(request, 'tasks/complete_task.html', {'task': task})
 
     def post(self, request, pk):
-        # Process the completion of the task here
         task = get_object_or_404(Tasks, pk=pk)
         task.completed_at = timezone.now()
         task.state = 'Completed'
@@ -123,6 +104,6 @@ class TaskCompleteView(views.UpdateView):
 
 
 class TaskDeleteView(views.DeleteView):
-    queryset = Tasks.objects.all()
+    model = Tasks
     template_name = 'tasks/delete_task.html'
     success_url = reverse_lazy('tasks_list')

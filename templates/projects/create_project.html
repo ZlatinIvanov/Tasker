@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block main_content %}
+
+    <button type="submit" {% url 'create_project' %} method="post">Create New Project</button>
+    <form action="{% url 'create_project' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="edit-btn" type="submit">Create</button>
+    </form>
+    <h1>Projects List</h1>
+    <ul>
+        {% for project in projects %}
+            <a href{{ project.name }}>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

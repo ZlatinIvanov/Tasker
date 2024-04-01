@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block main_content %}
+    <form method="GET" style="text-align: right; margin-bottom: 10px;">
+    <label for="sort">Sort by:</label>
+    <select name="sort" id="sort" style="vertical-align: middle;">
+        <option value="clients" {% if request.GET.sort == "clients" %}selected{% endif %}>Client</option>
+        <option value="name" {% if request.GET.sort == "name" %}selected{% endif %}>Name</option>
+        <option value="date_created" {% if request.GET.sort == "date_created" %}selected{% endif %}>Date Created</option>
+    </select>
+    <button type="submit" style="vertical-align: middle;">Sort</button>
+</form>
+    <button type="submit" {% url 'create_project' %} method="post">Create New Project</button>
+    <form action="{% url 'create_project' %}" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="edit-btn" type="submit">Create</button>
+        </form>
+    <h1>Projects List</h1>
+<div class="list-group">
+    {% for project in projects %}
+
+        <a href="{% url 'project_details' pk=project.pk %}" class="list-group list-group-item list-group-item-action task-item">
+            <div class="task-part">{{ project.name }}</div>
+            <div class="task-part">Client: {{ project.clients }}</div>
+            <div class="task-part">Description: {{ project.description }}</div>
+            <div class="task-part">Created At: {{ project.date_created }}</div>
+        </a>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

@@ -15,5 +15,3 @@ class IndexView(views.ListView):
 
     paginate_by = 1
 
-
-

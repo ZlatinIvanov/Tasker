@@ -21,3 +21,11 @@ class TaskerEditUserForm(auth_forms.UserChangeForm, forms.ModelForm):
     class Meta(auth_forms.UserChangeForm.Meta):
         model = UserModel
 
+
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ("first_name", "last_name", "date_of_birth", "profile_picture")
+        widgets = {
+            'due_date': forms.DateInput(attrs={'type': 'date'}),
+        }

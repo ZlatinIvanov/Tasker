@@ -52,10 +52,6 @@ class ProfileDetailsView(views.DetailView):
         filtered_queryset = queryset.filter(pk=pk)
         return filtered_queryset
 
-    # def get_object(self, queryset=None):
-    #     # Fetch the user's profile
-    #     return get_object_or_404(Profile, user=self.request.user)
-
 
 class ProfileUpdateView(views.UpdateView):
     queryset = Profile.objects.all()

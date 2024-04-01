@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 from tasker.accounts.models import TaskerUser
+from tasker.projects.models import Project
 
 UserModel = get_user_model()
 
@@ -53,6 +54,12 @@ class Tasks(models.Model):
     created_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name="Task creation date",
+    )
+    project = models.ForeignKey(
+        Project,
+        on_delete=models.CASCADE,
+        help_text="Choose the task project",
+        verbose_name="Task project",
     )
 
     difficulty = models.CharField(

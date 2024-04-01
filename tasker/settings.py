@@ -29,6 +29,8 @@ INSTALLED_APPS = [
 
     'tasker.accounts',
     'tasker.tasks',
+    'tasker.projects',
+    'tasker.common',
 ]
 
 MIDDLEWARE = [
