@@ -1,5 +1,19 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+
 {% load static %}
-    <p>Details</p>
 {% block main_content %}
+    <style>
+        h1 {
+            margin: 0 auto;
+            width: 100%;
+            text-align: center;
+        }
+    </style>
+    <h1>Project Detail</h1>
+    <p>Title: {{ project.name }}</p>
+    <p>Description: {{ project.description }}</p>
+    <p>Clients: {{ project.clients }}</p>
+    <a href="{% url 'edit_project' pk=project.pk %}">Edit</a>
+    <a href="{% url 'delete_project' pk=project.pk %}">Delete</a>
+
 {% endblock %}

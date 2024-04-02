@@ -57,6 +57,8 @@ class Tasks(models.Model):
     )
     project = models.ForeignKey(
         Project,
+        null=True,
+        blank=True,
         on_delete=models.CASCADE,
         help_text="Choose the task project",
         verbose_name="Task project",

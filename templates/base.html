@@ -5,8 +5,11 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width-device-width, initial-scale=1, maximum-scale=1"/>
-    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/solar/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/5/solar/bootstrap.min.css">
+
     <title> Tasker </title>
     <style>
 
@@ -45,7 +48,11 @@
             <ul class="navbar-nav ms-auto">
                 {% if request.user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="btn btn-primary navbar-btn" type="button" href="{% url 'project_list' %}">Projects</a>
+                        <a class="btn btn-primary navbar-btn" type="button" href="{% url 'profile_list' %}">Profiles</a>
+                    </li>
+                    &nbsp; &nbsp; &nbsp;
+                    <li class="nav-item">
+                        <a class="btn btn-primary navbar-btn" type="button" href="{% url 'projects_list' %}">Projects</a>
                     </li>
                     &nbsp; &nbsp; &nbsp;
                     <li class="nav-item">
@@ -84,7 +91,7 @@
                         <a class="btn btn-primary navbar-btn" type="button" href="{% url 'login' %}">Login</a>
                     </li>
                 {% endif %}
-                &nbsp; &nbsp; &nbsp;
+
             </ul>
         </div>
     </nav>
@@ -94,7 +101,10 @@
     {% block main_content %}
     {% endblock %}
     <!-- footer -->
-    <footer></footer>
+
+    <footer>
+        <p>by Zlatin Ivanov</p>
+    </footer>
 </div>
 </body>
 </html>

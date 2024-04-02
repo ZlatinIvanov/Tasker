@@ -6,7 +6,7 @@ from tasker.tasks.models import Tasks
 class TaskCreateForm(forms.ModelForm):
     class Meta:
         model = Tasks
-        fields = ['title', 'description', 'priority', 'difficulty', 'due_date', 'assigned_to',]
+        fields = ['title', 'description', 'priority', 'difficulty', 'assigned_to', 'project', 'due_date', ]
         widgets = {
             'due_date': forms.DateInput(attrs={'type': 'date'}),
         }
@@ -15,7 +15,7 @@ class TaskCreateForm(forms.ModelForm):
 class TaskUpdateForm(forms.ModelForm):
     class Meta:
         model = Tasks
-        fields = ['title', 'description', 'priority', 'difficulty', 'due_date', 'assigned_to', 'created_by']
+        fields = ['title', 'description', 'priority', 'difficulty','assigned_to', 'project', 'due_date', ]
         widgets = {
             'due_date': forms.DateInput(attrs={'type': 'date'}),
         }

@@ -5,7 +5,7 @@ from tasker.projects.views import ProjectListView, ProjectDetailsView, ProjectEd
 
 urlpatterns = (
     path('create_project/', ProjectCreateView.as_view(), name='create_project'),
-    path('projects/', ProjectListView.as_view(), name='project_list'),
+    path('projects/', ProjectListView.as_view(), name='projects_list'),
     path(
         "project/<int:pk>/", include([
             path("", ProjectDetailsView.as_view(), name="project_details"),

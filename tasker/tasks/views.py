@@ -6,7 +6,7 @@ from django.utils import timezone
 from django.views import generic as views
 
 from tasker.tasks.models import Tasks
-from tasker.tasks.forms import TaskCreateForm
+from tasker.tasks.forms import TaskCreateForm, TaskUpdateForm
 
 SORT_OPTIONS = {
     'priority': 'priority',
@@ -79,8 +79,8 @@ class UserTasksListView(auth_mixin.LoginRequiredMixin, views.ListView):
 
 class TaskEditView(views.UpdateView):
     queryset = Tasks.objects.all()
+    form_class = TaskUpdateForm
     template_name = "tasks/edit_task.html"
-    fields = ("title", "description", "due_date", "priority", "difficulty", "assigned_to",)
 
     def get_success_url(self):
         return reverse_lazy("task_details", kwargs={

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% load static %}
+{#{% load paging %}#}
+
+{% block main_content %}
+
+    <h1>Profiles</h1>
+    <ul>
+        {% if profile_list %}
+            {% for user in profile_list %}
+                <a href="{% url 'details profile' pk=user.pk %}">
+                    <li>{{ user.email }}</li>
+                </a>
+            {% endfor %}
+        {% else %}
+            <li>No profiles found.</li>
+        {% endif %}
+    </ul>
+{% endblock %}

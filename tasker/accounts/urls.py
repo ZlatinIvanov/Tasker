@@ -1,12 +1,13 @@
 from django.urls import path, include
 
 from tasker.accounts.views import RegisterView, LoginView, \
-        logout_user, ProfileDetailsView, ProfileUpdateView, ProfileDeleteView
+    logout_user, ProfileDetailsView, ProfileUpdateView, ProfileDeleteView, ProfileListView
 
 urlpatterns = (
     path('register/', RegisterView.as_view(), name='register'),
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', logout_user, name='logout'),
+    path('profiles/', ProfileListView.as_view(), name='profile_list'),
     path(
         "profile/<int:pk>/", include([
             path("", ProfileDetailsView.as_view(), name="details profile"),

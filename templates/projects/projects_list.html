@@ -11,11 +11,10 @@
     </select>
     <button type="submit" style="vertical-align: middle;">Sort</button>
 </form>
-    <button type="submit" {% url 'create_project' %} method="post">Create New Project</button>
     <form action="{% url 'create_project' %}" method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <button class="edit-btn" type="submit">Create</button>
+            <button class="edit-btn" type="submit">Create New Project</button>
         </form>
     <h1>Projects List</h1>
 <div class="list-group">

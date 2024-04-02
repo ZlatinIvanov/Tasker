@@ -74,3 +74,9 @@ class ProfileDeleteView(views.DeleteView):
     queryset = TaskerUser.objects.all()
     template_name = "accounts/delete_profile.html"
     success_url = reverse_lazy('index')
+
+
+class ProfileListView(views.ListView):
+    queryset = TaskerUser.objects.all()
+    template_name = "accounts/profile_list.html"
+    context_object_name = 'profile_list'
