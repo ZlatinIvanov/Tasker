@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 from tasker.accounts.models import TaskerUser
+from tasker.common.models import Comment, Attachment
 from tasker.projects.models import Project
 
 UserModel = get_user_model()
@@ -99,6 +100,7 @@ class Tasks(models.Model):
         blank=True,
         verbose_name="Task completion date",
     )
+
 
     def mark_as_done(self):
         self.state = TaskState.COMPLETE

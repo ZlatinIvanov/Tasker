@@ -5,6 +5,7 @@ from django.urls import reverse_lazy, reverse
 from django.utils import timezone
 from django.views import generic as views
 
+from tasker.common.forms import CommentForm, AttachmentForm
 from tasker.tasks.models import Tasks
 from tasker.tasks.forms import TaskCreateForm, TaskUpdateForm
 
@@ -53,6 +54,35 @@ class TaskDetailsView(auth_mixin.LoginRequiredMixin, views.DetailView):
     model = Tasks
     template_name = "tasks/task_details.html"
     pk_url_kwarg = 'pk'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comment_form'] = CommentForm()
+        context['attachment_form'] = AttachmentForm()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        context = self.get_context_data(**kwargs)
+        comment_form = context['comment_form']
+        attachment_form = context['attachment_form']
+
+        if 'comment_submit' in request.POST:
+            comment_form = CommentForm(request.POST)
+            if comment_form.is_valid():
+                comment = comment_form.save(commit=False)
+                comment.task = self.object
+                comment.user = request.user
+                comment.save()
+        elif 'attachment_submit' in request.POST:
+            attachment_form = AttachmentForm(request.POST, request.FILES)
+            if attachment_form.is_valid():
+                attachment = attachment_form.save(commit=False)
+                attachment.task = self.object
+                attachment.user = request.user
+                attachment.save()
+
+        return self.render_to_response(context)
 
 
 class TaskListView(views.ListView):
@@ -106,3 +136,4 @@ class TaskDeleteView(views.DeleteView):
     queryset = Tasks.objects.all()
     template_name = 'tasks/delete_task.html'
     success_url = reverse_lazy('tasks_list')
+

@@ -38,7 +38,8 @@ UserModel = get_user_model()
 
 class Comment(models.Model):
     task = models.ForeignKey(
-        'tasks.Tasks',  # Correct model reference
+        'tasks.Tasks',
+        related_name="comments",
         on_delete=models.CASCADE,
     )
     user = models.ForeignKey(
@@ -53,7 +54,8 @@ class Comment(models.Model):
 
 class Attachment(models.Model):
     task = models.ForeignKey(
-        'tasks.Tasks',  # Correct model reference
+        'tasks.Tasks',
+        related_name="attachments",
         on_delete=models.CASCADE,
     )
     user = models.ForeignKey(
@@ -61,7 +63,7 @@ class Attachment(models.Model):
         on_delete=models.CASCADE,
     )
     file = models.FileField(
-        upload_to='attachments/',
+        upload_to='attachments',
     )
     description = models.TextField(
         blank=True,
