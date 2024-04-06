@@ -7,8 +7,9 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['comment']
-
-
+        widgets = {
+            'comment': forms.Textarea(attrs={'placeholder': 'Enter your comment here...'})
+        }
 class AttachmentForm(forms.ModelForm):
     class Meta:
         model = Attachment

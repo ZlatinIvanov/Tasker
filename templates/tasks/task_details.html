@@ -10,9 +10,9 @@
         }
     </style>
     <h1>Task Detail</h1>
-    <p>Title: {{ object.title }}</p>
+    <p class="button">Title: {{ object.title }}</p>
     <p>Description: {{ object.description }}</p>
-    <p>Description: {{ object.project }}</p>
+    <p>Project: {{ object.project }}</p>
     <p>Created by: {{ object.created_by }}</p>
     <p>Priority: {{ object.priority }}</p>
     <p>Difficulty: {{ object.difficulty }}</p>
@@ -29,46 +29,50 @@
         <a href="{% url 'complete_task' pk=object.pk %}">Complete</a>
     {% endif %}
 
+    <br>
+    <br>
+    <br>
+
+
     <h4>Comments</h4>
     <ul>
         {% for comment in tasks.comments.all %}
-            <li>{{ comment.comment }} - {{ comment.created_at }}</li>
+            <li class="list-group container" for="exampleTextarea">{{ comment.comment }} - {{ comment.created_at }} - {{ comment.user.email }}</li>
         {% endfor %}
     </ul>
 
     <!-- Display attachments -->
-    <h4>Attachments</h4>
-    <ul>
+{#    <h4>Attachments</h4>#}
+{#    <ul>#}
+{##}
+{#        {% for attachment in tasks.attachments.all %}#}
+{#            Test#}
+{#            <li><a href="{{ attachment.file.url }}">{{ attachment.file.name }} </a> {{ attachment.created_at }} {{ attachment.user.email }}</li>#}
+{#        {% endfor %}#}
+{#    </ul>#}
 
-        {% for attachment in tasks.attachments.all %}
-            Test
-            <li><a href="{{ attachment.file.url }}">{{ attachment.file.name }} </a> {{ attachment.created_at }}</li>
-        {% endfor %}
-    </ul>
 
     <!-- Comment Form -->
-    <div>
-        <label for="exampleTextarea" class="form-label mt-4">Add Comment</label>
-        <form class="form-control" id="exampleTextarea" rows="3" method="post">
-            {% csrf_token %}
-            <label for="exampleTextarea" class="form-label mt-4">Add Comment</label>
-            {{ comment_form.as_p }}
-            <button type="submit" class="btn btn-primary">Add Comment</button>
-        </form>
-    </div>
 
+    <form method="post" action="{% url 'task_details' pk=object.pk %}">
+        {% csrf_token %}
+        <label for="exampleTextarea" class="form-label mt-4">Comment:</label><br>
+        <textarea class="form-control" id="exampleTextarea" rows="3" id="comment" name="comment" placeholder="Write your comment here..."></textarea><br>
 
+        <button class="btn btn-primary" type="submit" name="comment_submit">Post Comment</button>
+    </form>
 
+    <br>
     <!-- Attachment Form -->
+    <label for="exampleTextarea" class="form-label mt-4">Add attachment:</label><br>
     <div>
-        <label for="formFile" class="form-label mt-4">Default file input example</label>
         <input class="form-control" type="file" id="formFile">
     </div>
-    <h4>Add Attachment</h4>
+
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ attachment_form.as_p }}
-        <button type="submit" class="btn btn-primary">Add Attachment</button>
+        <textarea class="form-control" id="exampleTextarea" rows="3" id="attachment" name="attachment" placeholder="Write description if needed..."></textarea><br>
+        <button type="submit" class="btn btn-primary" name="attachment_submit">Add Attachment</button>
     </form>
 
     <form>
