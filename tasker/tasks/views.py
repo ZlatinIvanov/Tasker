@@ -1,11 +1,13 @@
 from django.contrib.auth import mixins as auth_mixin
-from django.http import HttpResponseRedirect
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.http import HttpResponseRedirect, request
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy, reverse
 from django.utils import timezone
 from django.views import generic as views
 
 from tasker.common.forms import CommentForm, AttachmentForm
+from tasker.common.templatetags.paging import get_paginated_context_data
 from tasker.tasks.models import Tasks
 from tasker.tasks.forms import TaskCreateForm, TaskUpdateForm
 
@@ -90,7 +92,14 @@ class TaskListView(views.ListView):
     model = Tasks
     template_name = 'tasks/tasks_list.html'
     context_object_name = 'tasks'
-    paginate_by = 10
+    paginate_by = 5
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        queryset = self.get_queryset()
+        page_number = self.request.GET.get('page')
+        context.update(get_paginated_context_data(queryset, self.paginate_by, page_number))
+        return context
 
     def get_queryset(self):
         queryset = Tasks.objects.filter(state='Not Done')
@@ -116,7 +125,14 @@ class UserTasksListView(auth_mixin.LoginRequiredMixin, views.ListView):
     model = Tasks
     template_name = 'tasks/user_tasks.html'
     context_object_name = 'tasks'
-    paginate_by = 10
+    paginate_by = 5
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        queryset = self.get_queryset()
+        page_number = self.request.GET.get('page')
+        context.update(get_paginated_context_data(queryset, self.paginate_by, page_number))
+        return context
 
     def get_queryset(self):
 
@@ -135,6 +151,15 @@ class TaskEditView(views.UpdateView):
 
 
 class TaskCompleteView(views.UpdateView):
+    paginate_by = 5
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        queryset = self.get_queryset()
+        page_number = self.request.GET.get('page')
+        context.update(get_paginated_context_data(queryset, self.paginate_by, page_number))
+        return context
+
     def get(self, request, pk):
         task = get_object_or_404(Tasks, pk=pk)
         return render(request, 'tasks/complete_task.html', {'task': task})

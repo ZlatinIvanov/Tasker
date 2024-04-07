@@ -1,43 +1,45 @@
 {% extends "base.html" %}
 
 {% load static %}
-{#{% load paging %}#}
 
 {% block main_content %}
-<style>
-    h1 {
-        margin: 0 auto; /* This centers the form horizontally */
-        width: 100%; /* Adjust the width as needed */
-        text-align: center; /* This centers the form vertically */
-    }
+    <style>
+        h1 {
+            margin: 0 auto; /* This centers the form horizontally */
+            width: 100%; /* Adjust the width as needed */
+            text-align: center; /* This centers the form vertically */
+        }
 
-</style>
+    </style>
 
-<h1>Task List</h1>
+    <h1>Task List</h1>
 
-{% include "helpers/sort_tasks.html" %}
-{% include "helpers/filter_tasks.html" %}
+    {% include "helpers/sort_tasks.html" %}
+    {% include "helpers/filter_tasks.html" %}
 
 
-<div class="list-group">
-    {% for task in tasks %}
+    <div class="list-group">
+        {% for task in page_obj.object_list %}
 
-        <a href="{% url 'task_details' pk=task.pk %}" class="list-group list-group-item list-group-item-action task-item">
-            <div class="task-part">{{ task.title }}</div>
-            <div class="task-part">Due: {{ task.due_date }}</div>
-            <div class="task-part">Difficulty: {{ task.difficulty }}</div>
-            <div class="task-part">Created by: {{ task.created_by }}</div>
-            <span class="task-priority
+            <a href="{% url 'task_details' pk=task.pk %}"
+               class="list-group list-group-item list-group-item-action task-item">
+                <div class="task-part">{{ task.title }}</div>
+                <div class="task-part">Due: {{ task.due_date }}</div>
+                <div class="task-part">Difficulty: {{ task.difficulty }}</div>
+                <div class="task-part">Created by: {{ task.created_by }}</div>
+                <span class="task-priority
                 {% if task.priority == 'LOW' %} priority-low
                 {% elif task.priority == 'NORMAL' %} priority-normal
                 {% elif task.priority == 'HIGH' %} priority-high
                 {% endif %}">{{ task.priority }}
             </span>
-        </a>
+            </a>
 
-    {% endfor %}
+        {% endfor %}
 
-</div>
+    </div>
 
+
+    {% include "common/paging/pagination.html" %}
 
 {% endblock %}

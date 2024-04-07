@@ -10,6 +10,7 @@ from django.views import generic as views
 
 from tasker.accounts.forms import TaskerUserCreationForm
 from tasker.accounts.models import Profile, TaskerUser
+from tasker.common.templatetags.paging import get_paginated_context_data
 
 SORT_OPTIONS = {
     'email': 'email',
@@ -98,6 +99,13 @@ class ProfileListView(views.ListView):
     template_name = "accounts/profile_list.html"
     context_object_name = 'profile_list'
     paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        queryset = self.get_queryset()
+        page_number = self.request.GET.get('page')
+        context.update(get_paginated_context_data(queryset, self.paginate_by, page_number))
+        return context
 
     def get_queryset(self):
         queryset = TaskerUser.objects.all()

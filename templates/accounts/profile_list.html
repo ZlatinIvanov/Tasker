@@ -10,19 +10,20 @@
     {% include "helpers/sort_users.html" %}
     {% include "helpers/filter_users.html" %}
     <br>
-        {% if profile_list %}
-            {% for user in profile_list %}
-                <a class="btn-primary btn button-long" href="{% url 'details profile' pk=user.pk %}">
-                    <li>
-                        {{ user.email }}
-                        {% if user.profile.full_name %}
-                           -    {{ user.profile.full_name }}
-                        {% endif %}
-                    </li>
-                </a>
-            {% endfor %}
-        {% else %}
-            <li>No profiles found.</li>
-        {% endif %}
+    {% if profile_list %}
+        {% for user in profile_list %}
+            <a class="btn-primary btn button-long" href="{% url 'details profile' pk=user.pk %}">
+                <li>
+                    {{ user.email }}
+                    {% if user.profile.full_name %}
+                        -    {{ user.profile.full_name }}
+                    {% endif %}
+                </li>
+            </a>
+        {% endfor %}
+    {% else %}
+        <li>No profiles found.</li>
+    {% endif %}
     </br>
+    {% include "common/paging/pagination.html" %}
 {% endblock %}
