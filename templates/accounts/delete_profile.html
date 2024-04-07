@@ -9,8 +9,8 @@
         <form method="post">
             {% csrf_token %}
             <div class="sure-buttons">
-                <button type="submit">Yes</button>
-                <a class="edit-btn" href="{% url 'index' %}">Go Back</a>
+                <button class="button-long btn btn-primary" type="submit">Yes</button>
+                <a class="btn btn-primary" href="{% url 'index' %}">Go Back</a>
             </div>
         </form>
     </div>

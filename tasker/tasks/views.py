@@ -29,6 +29,7 @@ class TaskCompletedListView(auth_mixin.LoginRequiredMixin, views.ListView):
     model = Tasks
     template_name = 'tasks/completed_tasks_list.html'
     context_object_name = 'tasks'
+    paginate_by = 10
 
     def get_queryset(self):
         sort_by = self.request.GET.get('sort')
@@ -89,12 +90,25 @@ class TaskListView(views.ListView):
     model = Tasks
     template_name = 'tasks/tasks_list.html'
     context_object_name = 'tasks'
+    paginate_by = 10
 
     def get_queryset(self):
         queryset = Tasks.objects.filter(state='Not Done')
         sort_by = self.request.GET.get('sort')
+        project_filter = self.request.GET.get('project')
+        difficulty_filter = self.request.GET.get('difficulty')
+        priority_filter = self.request.GET.get('priority')
+
         if sort_by in SORT_OPTIONS:
             return queryset.order_by(SORT_OPTIONS[sort_by])
+
+        if project_filter:
+            queryset = queryset.filter(project__name__icontains=project_filter)
+        if priority_filter:
+            queryset = queryset.filter(priority=priority_filter)
+        if difficulty_filter:
+            queryset = queryset.filter(difficulty=difficulty_filter)
+
         return queryset
 
 
@@ -102,8 +116,10 @@ class UserTasksListView(auth_mixin.LoginRequiredMixin, views.ListView):
     model = Tasks
     template_name = 'tasks/user_tasks.html'
     context_object_name = 'tasks'
+    paginate_by = 10
 
     def get_queryset(self):
+
         return Tasks.objects.filter(assigned_to=self.request.user)
 
 

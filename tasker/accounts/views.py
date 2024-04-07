@@ -1,5 +1,7 @@
 from django.contrib.auth import views as auth_views, login, logout
 from django.contrib.auth.mixins import AccessMixin
+from django.core.exceptions import ValidationError
+from django.db.models import Prefetch
 from django.forms import DateInput
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
@@ -8,6 +10,12 @@ from django.views import generic as views
 
 from tasker.accounts.forms import TaskerUserCreationForm
 from tasker.accounts.models import Profile, TaskerUser
+
+SORT_OPTIONS = {
+    'email': 'email',
+    'name': 'name',
+    'date_joined': 'date_joined',
+}
 
 
 class OwnerRequiredMixin(AccessMixin):
@@ -52,6 +60,11 @@ class ProfileDetailsView(views.DetailView):
         filtered_queryset = queryset.filter(pk=pk)
         return filtered_queryset
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['profile_picture'] = self.object.profile_picture
+        return context
+
 
 class ProfileUpdateView(views.UpdateView):
     queryset = Profile.objects.all()
@@ -69,6 +82,10 @@ class ProfileUpdateView(views.UpdateView):
         form.fields["date_of_birth"].label = "Birthday"
         return form
 
+    def form_valid(self, form):
+        profile_picture = form.cleaned_data.get("profile_picture")
+        return super().form_valid(form)
+
 
 class ProfileDeleteView(views.DeleteView):
     queryset = TaskerUser.objects.all()
@@ -80,3 +97,20 @@ class ProfileListView(views.ListView):
     queryset = TaskerUser.objects.all()
     template_name = "accounts/profile_list.html"
     context_object_name = 'profile_list'
+    paginate_by = 10
+
+    def get_queryset(self):
+        queryset = TaskerUser.objects.all()
+        sort_by = self.request.GET.get('sort')
+        full_name_filter = self.request.GET.get('full_name')
+        email_filter = self.request.GET.get('email')
+
+        if sort_by in SORT_OPTIONS:
+            return queryset.order_by(SORT_OPTIONS[sort_by])
+        if full_name_filter:
+            profiles = Profile.objects.filter(first_name__icontains=full_name_filter) | Profile.objects.filter(
+                last_name__icontains=full_name_filter)
+            queryset = TaskerUser.objects.filter(profile__in=profiles)
+        if email_filter:
+            queryset = queryset.filter(email__icontains=email_filter)
+        return queryset

@@ -7,9 +7,6 @@ from django.utils import timezone
 from tasker.accounts.managers import TaskerUserManager
 
 
-class TaskerGroups(TaskerUserManager):
-    pass
-
 
 class TaskerUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
     email = models.EmailField(

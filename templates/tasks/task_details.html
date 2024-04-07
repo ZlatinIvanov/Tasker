@@ -18,15 +18,19 @@
     <p>Difficulty: {{ object.difficulty }}</p>
     <p>Due Date: {{ object.due_date }}</p>
     <p>Created at: {{ object.created_at }}</p>
-    <p>Assigned to: {{ object.assigned_to }}</p>
+    <p>Assigned to:<a href="{% url "details profile" pk=object.assigned_to.pk %}"> {{ object.assigned_to }}</a></p>
     <p>State: {{ object.state }}</p>
     {% if object.state == "Completed" %}
         <p>Completed: {{ object.completed_at }}</p>
     {% endif %}
-    <a href="{% url 'edit_task' pk=object.pk %}">Edit</a>
-    <a href="{% url 'delete_task' pk=object.pk %}">Delete</a>
+    <a class="btn-primary btn" href="{% url 'edit_task' pk=object.pk %}">Edit</a>
+    <a class="btn-primary btn" href="{% url 'delete_task' pk=object.pk %}">Delete</a>
+    <br>
+    <br>
+
     {% if  object.state == "Not Done" %}
-        <a href="{% url 'complete_task' pk=object.pk %}">Complete</a>
+
+        <a class="btn-primary btn button-long" href="{% url 'complete_task' pk=object.pk %}">Complete</a>
     {% endif %}
 
     <br>
@@ -34,7 +38,8 @@
     <br>
 
 
-    <h4>Comments</h4>
+    <h4 class="list-group container">Comments</h4>
+    <br>
     <ul>
         {% for comment in tasks.comments.all %}
             <li class="list-group container" for="exampleTextarea">{{ comment.comment }} - {{ comment.created_at }} - {{ comment.user.email }}</li>

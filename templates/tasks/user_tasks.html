@@ -4,11 +4,13 @@
 
 {% block main_content %}
     <h1>Your Tasks</h1>
-    <ul>
+    {% include "helpers/sort_tasks.html" %}
+    {% include "helpers/filter_tasks.html" %}
+
         {% for task in tasks %}
-            <li>{{ task.title }}</li>
+            <a class="btn button-long btn-primary" href="{% url 'task_details' pk=task.pk %}">{{ task.title }}</a>
         {% endfor %}
-    </ul>
+
 
 
 {% endblock %}

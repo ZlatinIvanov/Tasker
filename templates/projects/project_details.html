@@ -13,7 +13,7 @@
     <p>Title: {{ project.name }}</p>
     <p>Description: {{ project.description }}</p>
     <p>Clients: {{ project.clients }}</p>
-    <a href="{% url 'edit_project' pk=project.pk %}">Edit</a>
-    <a href="{% url 'delete_project' pk=project.pk %}">Delete</a>
+    <a class="btn-primary btn" href="{% url 'edit_project' pk=project.pk %}">Edit</a>
+    <a class="btn-primary btn" href="{% url 'delete_project' pk=project.pk %}">Delete</a>
 
 {% endblock %}

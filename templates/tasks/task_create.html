@@ -7,7 +7,7 @@
         <h2>New Task</h2>
         <form action="{% url 'create_task' %}" method="post" enctype="multipart/form-data">
             {{ form.as_p }}
-            <button class="add-btn" type="submit">Create</button>
+            <button class="button-long btn btn-primary" type="submit">Create</button>
 
             {% csrf_token %}
         </form>

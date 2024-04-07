@@ -6,7 +6,7 @@
     <form action="{% url 'create_project' %}" method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button class="edit-btn" type="submit">Create</button>
+        <button class="btn button-long btn-primary" type="submit">Create</button>
     </form>
 
 {% endblock %}

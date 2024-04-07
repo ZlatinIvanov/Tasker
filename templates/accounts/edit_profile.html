@@ -4,10 +4,32 @@
 {% block main_content %}
     <div class="edit-delete">
         <h2>Edit Profile</h2>
-        <form action="{% url 'edit profile' pk=object.pk %}" method="post">
+        <form action="{% url 'edit profile' pk=object.pk %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button class="edit-btn" type="submit">Edit</button>
+                <div>
+                <label for="id_first_name">First Name:</label>
+                {{ form.first_name }}
+                </div>
+
+                <div>
+                    <label for="id_last_name">Last Name:</label>
+                    {{ form.last_name }}
+                </div>
+
+                <div>
+                    <label for="id_date_of_birth">Birthday:</label>
+                    <input type="date" id="id_date_of_birth" name="date_of_birth" value="{{ form.date_of_birth.value }}">
+                </div>
+
+                <div>
+                    <label for="id_profile_picture">Profile Picture:</label>
+                    {{ form.profile_picture }}
+                </div>
+
+                <div>
+            <button class="btn btn-primary button-long" type="submit">Edit</button>
+        </div>
+
         </form>
     </div>
 {% endblock %}

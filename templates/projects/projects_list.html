@@ -2,22 +2,19 @@
 {% load static %}
 
 {% block main_content %}
-    <form method="GET" style="text-align: right; margin-bottom: 10px;">
-    <label for="sort">Sort by:</label>
-    <select name="sort" id="sort" style="vertical-align: middle;">
-        <option value="clients" {% if request.GET.sort == "clients" %}selected{% endif %}>Client</option>
-        <option value="name" {% if request.GET.sort == "name" %}selected{% endif %}>Name</option>
-        <option value="date_created" {% if request.GET.sort == "date_created" %}selected{% endif %}>Date Created</option>
-    </select>
-    <button type="submit" style="vertical-align: middle;">Sort</button>
-</form>
+    <h1>Projects List</h1>
+
     <form action="{% url 'create_project' %}" method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <button class="edit-btn" type="submit">Create New Project</button>
+            <button class="btn btn-primary button-long" type="submit">Create New Project</button>
         </form>
-    <h1>Projects List</h1>
+
 <div class="list-group">
+
+    {% include "helpers/sort_projects.html" %}
+    {% include "helpers/filter_projects.html" %}
+
     {% for project in projects %}
 
         <a href="{% url 'project_details' pk=project.pk %}" class="list-group list-group-item list-group-item-action task-item">

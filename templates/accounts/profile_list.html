@@ -1,20 +1,28 @@
 {% extends "base.html" %}
 
 {% load static %}
+
 {#{% load paging %}#}
 
 {% block main_content %}
 
     <h1>Profiles</h1>
-    <ul>
+    {% include "helpers/sort_users.html" %}
+    {% include "helpers/filter_users.html" %}
+    <br>
         {% if profile_list %}
             {% for user in profile_list %}
-                <a href="{% url 'details profile' pk=user.pk %}">
-                    <li>{{ user.email }}</li>
+                <a class="btn-primary btn button-long" href="{% url 'details profile' pk=user.pk %}">
+                    <li>
+                        {{ user.email }}
+                        {% if user.profile.full_name %}
+                           -    {{ user.profile.full_name }}
+                        {% endif %}
+                    </li>
                 </a>
             {% endfor %}
         {% else %}
             <li>No profiles found.</li>
         {% endif %}
-    </ul>
+    </br>
 {% endblock %}

@@ -15,17 +15,8 @@
 
 <h1>Task List</h1>
 
-<form method="GET" style="text-align: right; margin-bottom: 10px;">
-    <label for="sort">Sort by:</label>
-    <select name="sort" id="sort" style="vertical-align: middle;">
-        <option value="priority" {% if request.GET.sort == "priority" %}selected{% endif %}>Priority</option>
-        <option value="created_at" {% if request.GET.sort == "created_at" %}selected{% endif %}>Created At</option>
-        <option value="due_date" {% if request.GET.sort == "due_date" %}selected{% endif %}>Due Date</option>
-        <option value="title" {% if request.GET.sort == "title" %}selected{% endif %}>Title</option>
-        <option value="created_by" {% if request.GET.sort == "created_by" %}selected{% endif %}>Created By</option>
-    </select>
-    <button type="submit" style="vertical-align: middle;">Sort</button>
-</form>
+{% include "helpers/sort_tasks.html" %}
+{% include "helpers/filter_tasks.html" %}
 
 
 <div class="list-group">
