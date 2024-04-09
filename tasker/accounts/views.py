@@ -1,10 +1,13 @@
 from django.contrib.auth import views as auth_views, login, logout
-from django.contrib.auth.mixins import AccessMixin
+from django.contrib.auth.decorators import user_passes_test, login_required
+from django.contrib.auth.mixins import AccessMixin, LoginRequiredMixin
 from django.core.exceptions import ValidationError
 from django.db.models import Prefetch
 from django.forms import DateInput
-from django.shortcuts import render, redirect
+from django.http import Http404, HttpResponseRedirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
+from django.utils.decorators import method_decorator
 
 from django.views import generic as views
 
@@ -17,6 +20,10 @@ SORT_OPTIONS = {
     'name': 'name',
     'date_joined': 'date_joined',
 }
+
+
+def is_director(user):
+    return user.groups.filter(name='Directors').exists()
 
 
 class OwnerRequiredMixin(AccessMixin):
@@ -85,27 +92,36 @@ class ProfileUpdateView(views.UpdateView):
 
     def form_valid(self, form):
         profile_picture = form.cleaned_data.get("profile_picture")
+        self.object = form.save()
         return super().form_valid(form)
 
 
 class ProfileDeleteView(views.DeleteView):
-    queryset = TaskerUser.objects.all()
-    template_name = "accounts/delete_profile.html"
+    model = TaskerUser
+    template_name = 'accounts/delete_profile.html'
     success_url = reverse_lazy('index')
 
+    def delete(self, request, *args, **kwargs):
+        # Get the profile object to be deleted
+        self.object = self.get_object()
 
-class ProfileListView(views.ListView):
+        # Handle related Comment records
+        self.object.comment_set.all().delete()
+
+        # Handle related Attachment records
+        self.object.attachment_set.all().delete()
+
+        # Delete the profile object
+        self.object.delete()
+
+        return HttpResponseRedirect(self.get_success_url())
+
+
+class ProfileListView(LoginRequiredMixin, views.ListView):
     queryset = TaskerUser.objects.all()
     template_name = "accounts/profile_list.html"
     context_object_name = 'profile_list'
     paginate_by = 10
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        queryset = self.get_queryset()
-        page_number = self.request.GET.get('page')
-        context.update(get_paginated_context_data(queryset, self.paginate_by, page_number))
-        return context
 
     def get_queryset(self):
         queryset = TaskerUser.objects.all()

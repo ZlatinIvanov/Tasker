@@ -77,6 +77,8 @@ class TaskDetailsView(auth_mixin.LoginRequiredMixin, views.DetailView):
                 comment.task = self.object
                 comment.user = request.user
                 comment.save()
+                return HttpResponseRedirect(request.path)
+
         elif 'attachment_submit' in request.POST:
             attachment_form = AttachmentForm(request.POST, request.FILES)
             if attachment_form.is_valid():
@@ -84,6 +86,9 @@ class TaskDetailsView(auth_mixin.LoginRequiredMixin, views.DetailView):
                 attachment.task = self.object
                 attachment.user = request.user
                 attachment.save()
+                return HttpResponseRedirect(request.path)
+            else:
+                context['attachment_form'] = attachment_form
 
         return self.render_to_response(context)
 

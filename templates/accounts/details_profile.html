@@ -5,44 +5,44 @@
 {% block main_content %}
     <br>
     <div class="profile">
-        <div class="profile-data">
-            <div class="profile_img">
-                {% if profile.profile_picture %}
-                    <img class="profile-picture" src="{{ profile.profile_picture }}" alt="Profile Picture">
-                {% else %}
-                    <img class="profile-picture" src="{% static 'images/profile_no_pic.jpg' %}" alt="Profile Picture">
-                {% endif %}
+    <div class="profile-data">
+        <div class="profile_img">
+            {% if profile.profile_picture %}
+                <img class="profile-picture" src="{{ profile.profile_picture }}" alt="Profile Picture">
+            {% else %}
+                <img class="profile-picture" src="{% static 'images/profile_no_pic.jpg' %}" alt="Profile Picture">
+            {% endif %}
+        </div>
+        <div class="personal">
+            <div class="edit">
+                <p>{{ profile.user.email }}</p>
+
+                <p>{{ profile.get_completed_task_count }}</p>
+                <p>{{ profile.get_not_done_task_count }}</p>
+
             </div>
-            <div class="personal">
-                <div class="edit">
-                    <p>{{ profile.user.email }}</p>
+            {% if profile.full_name %}
+                <h3 class="names">{{ profile.full_name }}</h3>
+            {% else %}
+                <p>Full Name: </p>
+            {% endif %}
+            {% if profile.date_of_birth %}
+                <p>Date of Birth: {{ profile.date_of_birth }}</p>
+            {% else %}
+                <p>Date of Birth: </p>
+            {% endif %}
+            <p class="email">Email: {{ profile.user.email }}</p>
+            <p class="email">Created at: {{ profile.user.date_joined }}</p>
 
-                    <p>{{ profile.get_completed_task_count  }}</p>
-                    <p>{{ profile.get_not_done_task_count  }}</p>
+            {% if profile.user.pk == request.user.pk %}
+                <a href="{% url 'edit profile' pk=profile.pk %}">
+                    <img class="edit-img" src="{% static 'images/edit.png' %}" alt="edit button"/>
+                </a>
 
-                </div>
-                {% if profile.full_name %}
-                    <h3 class="names">{{ profile.full_name }}</h3>
-                {% else %}
-                    <p>Full Name: </p>
-                {% endif %}
-                {% if profile.date_of_birth %}
-                    <p>Date of Birth: {{ profile.date_of_birth }}</p>
-                {% else %}
-                    <p>Date of Birth: </p>
-                {% endif %}
-                <p class="email">Email: {{ profile.user.email }}</p>
-                <p class="email">Created at: {{ profile.user.date_joined }}</p>
-                {% if profile.user.pk == request.user.pk %}
-                    <a href="{% url 'edit profile' pk=profile.pk %}">
-                        <img class="edit-img" src="{% static 'images/edit.png' %}" alt="edit button" />
-                    </a>
-
-                    <a href="{% url 'delete profile' pk=profile.pk %}">
-                        <img class="bin-img" src="{% static 'images/bin.jpg' %}" alt="bin button" />
-                    </a>
-                {% endif %}
-            </div>
+                <a href="{% url 'delete profile' pk=profile.pk %}">
+                    <img class="bin-img" src="{% static 'images/bin.jpg' %}" alt="bin button"/>
+                </a>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

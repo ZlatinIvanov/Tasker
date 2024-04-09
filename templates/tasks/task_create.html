@@ -6,10 +6,12 @@
     <div class="edit-delete edit-photo">
         <h2>New Task</h2>
         <form action="{% url 'create_task' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
             {{ form.as_p }}
+
             <button class="button-long btn btn-primary" type="submit">Create</button>
 
-            {% csrf_token %}
+
         </form>
     </div>
 {% endblock %}

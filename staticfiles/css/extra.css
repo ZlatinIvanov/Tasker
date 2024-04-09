@@ -10,15 +10,15 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    text-align: left; /* Align text to the left */
+    text-align: left;
 }
 
 
 .list-group2 {
-    display: flex; /* Change display to flex */
-    flex-direction: column; /* Stack items vertically */
-    align-items: flex-start; /* Align items to the start of the container */
-    text-align: left; /* Align text to the left */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
 }
 
 
@@ -97,3 +97,24 @@
 
 }
 
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.wrapper {
+    min-height: 800px;
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    flex: 1;
+}
+
+.footer {
+    background-color: #f0f0f0;
+    padding: 5px;
+    box-sizing: border-box;
+}

@@ -18,9 +18,8 @@
     {% for project in projects %}
 
         <a href="{% url 'project_details' pk=project.pk %}" class="list-group list-group-item list-group-item-action task-item">
-            <div class="task-part">{{ project.name }}</div>
+            <div class="task-part">Project Name: {{ project.name }}</div>
             <div class="task-part">Client: {{ project.clients }}</div>
-            <div class="task-part">Description: {{ project.description }}</div>
             <div class="task-part">Created At: {{ project.date_created }}</div>
         </a>
 

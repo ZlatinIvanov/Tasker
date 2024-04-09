@@ -1,5 +1,6 @@
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
+
 def get_paginated_context_data(queryset, paginate_by, page_number):
     paginator = Paginator(queryset, paginate_by)
 

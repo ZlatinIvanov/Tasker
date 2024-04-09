@@ -28,6 +28,9 @@ class TaskState(models.TextChoices):
 
 class Tasks(models.Model):
 
+    class Meta:
+        verbose_name_plural = "tasks"
+
     title = models.CharField(
         max_length=50,
         help_text="Enter the task title",
@@ -78,10 +81,9 @@ class Tasks(models.Model):
         verbose_name="Task state",
     )
 
-    assigned_to = models.ForeignKey(
+    assigned_to = models.ManyToManyField(
         UserModel,
         related_name='assigned_tasks',
-        on_delete=models.DO_NOTHING,
         help_text="Choose the task assigned to",
         verbose_name="Task assigned to",
         blank=True,
@@ -91,7 +93,7 @@ class Tasks(models.Model):
     created_by = models.ForeignKey(
         TaskerUser,
         related_name='creator',
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
         help_text="Choose the task created by",
         verbose_name="Task created by",
     )

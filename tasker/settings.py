@@ -120,12 +120,13 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = (
-    BASE_DIR / 'staticfiles',
+        BASE_DIR / 'staticfiles',
 )
 
-MEDIA_ROOT = (
-    BASE_DIR / 'mediafiles',
-)
+MEDIA_URL = 'mediafiles/'
+
+MEDIA_ROOT = BASE_DIR / 'mediafiles'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -157,5 +158,5 @@ LOGGING = {
 AUTH_USER_MODEL = 'accounts.TaskerUser'
 
 LOGIN_REDIRECT_URL = reverse_lazy("index")
-LOGIN_URL = reverse_lazy("signin user")
+LOGIN_URL = reverse_lazy("login")
 LOGOUT_REDIRECT_URL = reverse_lazy("index")

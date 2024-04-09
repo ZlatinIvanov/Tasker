@@ -798,6 +798,7 @@ progress {
 }
 
 .blockquote-footer {
+  display: inline-block;
   margin-top: -1rem;
   margin-bottom: 1rem;
   font-size: 0.875em;
@@ -805,6 +806,7 @@ progress {
 }
 .blockquote-footer::before {
   content: "— ";
+  display: inline-block;
 }
 
 .img-fluid {
@@ -12260,5 +12262,3 @@ textarea.form-control-lg {
   --bs-tooltip-bg: var(--bs-tertiary-bg);
   --bs-tooltip-color: var(--bs-emphasis-color);
 }
-
-

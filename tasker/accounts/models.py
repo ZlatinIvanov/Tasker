@@ -1,11 +1,12 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.db import models
 from django.contrib.auth import models as auth_models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 
 from tasker.accounts.managers import TaskerUserManager
-
 
 
 class TaskerUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
@@ -73,3 +74,10 @@ class Profile(models.Model):
 
         return self.first_name or self.last_name
 
+
+# @receiver(post_save, sender=TaskerUser)
+# def add_to_workers_group(sender, instance, created, **kwargs):
+#     workers_group, _ = Group.objects.get_or_create(name='Workers')
+#     if created:
+#         instance.groups.add(workers_group)
+#         instance.save()

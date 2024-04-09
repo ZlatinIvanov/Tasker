@@ -6,11 +6,11 @@
 
     <div class="delete-profile">
         <h1>Are you sure you want to delete your profile?</h1>
-        <form method="post">
+        <form method="post" action="{% url 'delete profile' pk=object.pk %}">
             {% csrf_token %}
             <div class="sure-buttons">
                 <button class="button-long btn btn-primary" type="submit">Yes</button>
-                <a class="btn btn-primary" href="{% url 'index' %}">Go Back</a>
+                <a class="btn btn-primary" href="{% url 'details profile' pk=object.pk %}">Go Back</a>
             </div>
         </form>
     </div>
