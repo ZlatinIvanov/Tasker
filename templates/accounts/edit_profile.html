@@ -28,16 +28,15 @@
 
 
             <div>
-                <label for="id_groups">Change Group:</label>
-                {% if user.groups.filter(name='Directors').exists %}
+
+                {% if can_edit_or_delete %}
+                    <label for="id_groups">Change Group:</label>
                     <select name="groups" id="id_groups">
                         <option value="" selected disabled>Select a group</option>
                         <option value="Directors">Directors</option>
                         <option value="Managers">Managers</option>
                         <option value="Workers">Workers</option>
                     </select>
-                {% else %}
-                    <p>You do not have permission to change groups</p>
                 {% endif %}
             </div>
 

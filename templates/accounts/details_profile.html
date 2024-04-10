@@ -34,11 +34,10 @@
             <p class="email">Email: {{ profile.user.email }}</p>
             <p class="email">Created at: {{ profile.user.date_joined }}</p>
 
-            {% if profile.user.pk == request.user.pk %}
+             {% if can_edit_or_delete %}
                 <a href="{% url 'edit profile' pk=profile.pk %}">
                     <img class="edit-img" src="{% static 'images/edit.png' %}" alt="edit button"/>
                 </a>
-
                 <a href="{% url 'delete profile' pk=profile.pk %}">
                     <img class="bin-img" src="{% static 'images/bin.jpg' %}" alt="bin button"/>
                 </a>

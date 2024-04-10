@@ -1,6 +1,7 @@
 from django.contrib.auth import views as auth_views, login, logout
 from django.contrib.auth.decorators import user_passes_test, login_required
-from django.contrib.auth.mixins import AccessMixin, LoginRequiredMixin
+from django.contrib.auth.mixins import AccessMixin, LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import Group
 from django.core.exceptions import ValidationError
 from django.db.models import Prefetch
 from django.forms import DateInput
@@ -62,27 +63,37 @@ class ProfileDetailsView(views.DetailView):
     template_name = "accounts/details_profile.html"
     pk_url_kwarg = 'pk'
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        pk = self.kwargs.get(self.pk_url_kwarg)
-        filtered_queryset = queryset.filter(pk=pk)
-        return filtered_queryset
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['profile_picture'] = self.object.profile_picture
+        user = self.request.user
+        profile = self.get_object()
+        context['profile_picture'] = profile.profile_picture
+        context['can_edit_or_delete'] = self.can_edit_or_delete(user, profile)
         return context
 
+    def can_edit_or_delete(self, user, profile):
+        # Check if the user is in the Directors group or is the owner of the profile
+        return user.groups.filter(name='Directors').exists() or user == profile.user
 
-class ProfileUpdateView(LoginRequiredMixin, views.UpdateView):
+
+class ProfileUpdateView(LoginRequiredMixin, UserPassesTestMixin, views.UpdateView):
     queryset = Profile.objects.all()
     template_name = "accounts/edit_profile.html"
     fields = ("first_name", "last_name", "date_of_birth", "profile_picture")
 
+    def test_func(self):
+        profile = self.get_object()
+        return self.request.user == profile.user or self.request.user.groups.filter(name='Directors').exists()
+
     def get_success_url(self):
-        return reverse_lazy("details profile", kwargs={
-            "pk": self.object.pk,
-        })
+        return reverse_lazy("details profile", kwargs={"pk": self.object.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        profile = self.get_object()
+        user_in_directors_group = self.request.user.groups.filter(name='Directors').exists()
+        context['can_edit_or_delete'] = user_in_directors_group or profile.user == self.request.user
+        return context
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class=form_class)
@@ -91,9 +102,30 @@ class ProfileUpdateView(LoginRequiredMixin, views.UpdateView):
         return form
 
     def form_valid(self, form):
+        print("Inside form_valid method")
+
+        response = super().form_valid(form)
+
+        # Handle profile picture
         profile_picture = form.cleaned_data.get("profile_picture")
-        self.object = form.save()
-        return super().form_valid(form)
+        if profile_picture:
+
+            self.object.profile_picture = profile_picture
+            self.object.save()
+
+        # Handle group change
+        if 'groups' in form.cleaned_data:
+            group_name = form.cleaned_data['groups']
+            if self.request.user.groups.filter(name='Directors').exists():
+
+                user = self.object.user
+                group = Group.objects.get(name=group_name)
+                user.groups.clear()
+                user.groups.add(group)
+                print("User group updated:", user.groups.all())
+            else:
+                print("User is not in Directors group")
+        return response
 
 
 class ProfileDeleteView(LoginRequiredMixin, views.DeleteView):
