@@ -74,7 +74,7 @@ class ProfileDetailsView(views.DetailView):
         return context
 
 
-class ProfileUpdateView(views.UpdateView):
+class ProfileUpdateView(LoginRequiredMixin, views.UpdateView):
     queryset = Profile.objects.all()
     template_name = "accounts/edit_profile.html"
     fields = ("first_name", "last_name", "date_of_birth", "profile_picture")
@@ -96,22 +96,18 @@ class ProfileUpdateView(views.UpdateView):
         return super().form_valid(form)
 
 
-class ProfileDeleteView(views.DeleteView):
+class ProfileDeleteView(LoginRequiredMixin, views.DeleteView):
     model = TaskerUser
     template_name = 'accounts/delete_profile.html'
     success_url = reverse_lazy('index')
 
     def delete(self, request, *args, **kwargs):
-        # Get the profile object to be deleted
         self.object = self.get_object()
 
-        # Handle related Comment records
         self.object.comment_set.all().delete()
 
-        # Handle related Attachment records
         self.object.attachment_set.all().delete()
 
-        # Delete the profile object
         self.object.delete()
 
         return HttpResponseRedirect(self.get_success_url())

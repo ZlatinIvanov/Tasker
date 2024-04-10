@@ -27,17 +27,21 @@
             </div>
 
 
-            {#            {% if can_edit_or_delete %}#}
-            {#                <div>#}
-            {#                    <label for="id_groups">Change Group:</label>#}
-            {#                    <select name="groups" id="id_groups">#}
-            {#                        <option value="" selected disabled>Select a group</option>#}
-            {#                        <option value="Directors">Directors</option>#}
-            {#                        <option value="Managers">Managers</option>#}
-            {#                        <option value="Workers">Workers</option>#}
-            {#                    </select>#}
-            {#                </div>#}
-            {#            {% endif %}#}
+            <div>
+                <label for="id_groups">Change Group:</label>
+                {% if user.groups.filter(name='Directors').exists %}
+                    <select name="groups" id="id_groups">
+                        <option value="" selected disabled>Select a group</option>
+                        <option value="Directors">Directors</option>
+                        <option value="Managers">Managers</option>
+                        <option value="Workers">Workers</option>
+                    </select>
+                {% else %}
+                    <p>You do not have permission to change groups</p>
+                {% endif %}
+            </div>
+
+
             <br>
             <div>
                 <button class="btn btn-primary button-long" type="submit">Edit</button>

@@ -1,0 +1,24 @@
+<form method="GET">
+
+    <label for="difficulty_filter">Filter by Difficulty:</label>
+    <select id="difficulty_filter" name="difficulty">
+        <option value="">All</option>
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+    </select>
+
+    <label for="priority_filter">Filter by Priority:</label>
+    <select id="priority_filter" name="priority">
+        <option value="">All</option>
+        <option value="low">Low</option>
+        <option value="normal">Normal</option>
+        <option value="high">High</option>
+    </select>
+
+    <label for="project_filter">Filter by Project:</label>
+    <input type="text" id="project_filter" name="project" placeholder="Enter Project Name">
+
+
+    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Apply Filters</button>
+</form>
