@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from django.urls import reverse_lazy
 
@@ -12,15 +13,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%zvu+k^x2x36y9%rwt6ar3f)6in$$-j+45$1i^udkpzr**koe3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', '1')
 
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-    'tasker.herokuapp.com',
-    '*',
-]
-
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost").split(" ")
+CSRF_TRUSTED_ORIGINS = [f"https://{host}" for host in ALLOWED_HOSTS]
 
 # Application definition
 
