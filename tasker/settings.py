@@ -64,6 +64,7 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'tasker.wsgi.application'
 
 
